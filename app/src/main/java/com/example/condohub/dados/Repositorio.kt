@@ -27,7 +27,7 @@ object Repositorio {
     const val CONDOMINIO = "Residencial Jardim das Flores"
     const val UNIDADE = "Apartamento 204 - Bloco A"
 
-    // Coordenadas usadas na consulta de qualidade do ar (Sao Paulo - SP)
+    // Coordenadas usadas na consulta de previsao do tempo (Sao Paulo - SP)
     const val LATITUDE = -23.5505
     const val LONGITUDE = -46.6333
     const val CIDADE = "Sao Paulo, SP"

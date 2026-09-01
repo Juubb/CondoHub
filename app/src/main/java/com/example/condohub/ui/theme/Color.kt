@@ -24,9 +24,8 @@ val Confirmado = Color(0xFF156B5A)
 val ConfirmadoFundo = Color(0xFFDFF2EC)
 val Erro = Color(0xFFB3261E)
 
-// Cores do indice de qualidade do ar (escala europeia)
-val ArBom = Color(0xFF2E9E5B)
-val ArRazoavel = Color(0xFF9BBF3C)
-val ArModerado = Color(0xFFE0A800)
-val ArRuim = Color(0xFFE06C1F)
-val ArMuitoRuim = Color(0xFFC0392B)
+// Cores da previsao do tempo, usadas na tela de reserva
+val TempoBom = Color(0xFF2E9E5B)        // sem risco de chuva
+val TempoInstavel = Color(0xFFE0A800)   // chance media de chuva
+val TempoRuim = Color(0xFFC0392B)       // alta chance de chuva
+val CeuFundo = Color(0xFFEAF2F8)        // fundo dos cartoes de previsao

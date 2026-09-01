@@ -31,7 +31,7 @@ object Rotas {
         rota == REGRAS -> "Regras do condominio"
         rota == ELEITOS -> "Corpo de eleitos"
         rota == GARAGEM -> "Garagem"
-        rota == COLETA -> "Coleta e qualidade do ar"
+        rota == COLETA -> "Coleta sustentavel"
         else -> ""
     }
 

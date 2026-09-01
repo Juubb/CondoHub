@@ -5,7 +5,7 @@ package com.example.condohub.modelo
 //
 // Todos os dados sao mantidos em memoria (sem back-end), como
 // permite o enunciado da atividade. A unica fonte externa e a
-// API publica de qualidade do ar.
+// API publica de previsao do tempo.
 // ============================================================
 
 /** Evento do calendario do condominio. */
@@ -88,29 +88,60 @@ data class Vaga(
     val minha: Boolean = false
 )
 
-/** Resposta da API publica de qualidade do ar. */
-data class QualidadeAr(
-    val indice: Int,
-    val pm25: Double,
-    val pm10: Double
+/**
+ * Previsao do tempo de um dia, vinda da API publica Open-Meteo.
+ *
+ * Usada na tela de reserva: antes de reservar a churrasqueira ou a
+ * area externa, o morador ve como o tempo deve estar naquele dia.
+ */
+data class DiaPrevisao(
+    val data: String,        // formato ISO: "2026-09-06"
+    val codigo: Int,         // codigo WMO devolvido pela API
+    val tempMax: Double,
+    val tempMin: Double,
+    val chanceChuva: Int     // probabilidade de precipitacao, em %
 ) {
-    /** Classificacao conforme a escala europeia de qualidade do ar (EAQI). */
-    val classificacao: String
-        get() = when {
-            indice <= 20 -> "Boa"
-            indice <= 40 -> "Razoavel"
-            indice <= 60 -> "Moderada"
-            indice <= 80 -> "Ruim"
-            indice <= 100 -> "Muito ruim"
-            else -> "Extremamente ruim"
+    /** Icone correspondente ao codigo meteorologico. */
+    val emoji: String
+        get() = when (codigo) {
+            0 -> "☀️"                          // ceu limpo
+            1 -> "🌤️"                    // poucas nuvens
+            2 -> "⛅"                                // parcialmente nublado
+            3 -> "☁️"                          // nublado
+            45, 48 -> "🌫️"               // nevoa
+            in 51..57 -> "🌦️"            // garoa
+            in 61..67 -> "🌧️"            // chuva
+            in 71..77, 85, 86 -> "🌨️"    // neve
+            in 80..82 -> "🌦️"            // pancadas de chuva
+            in 95..99 -> "⛈️"                  // trovoada
+            else -> "🌥️"
         }
 
-    /** Recomendacao pratica para os moradores. */
-    val recomendacao: String
+    /** Descricao em portugues do codigo meteorologico. */
+    val descricao: String
+        get() = when (codigo) {
+            0 -> "Ceu limpo"
+            1 -> "Poucas nuvens"
+            2 -> "Parcialmente nublado"
+            3 -> "Nublado"
+            45, 48 -> "Nevoa"
+            in 51..57 -> "Garoa"
+            in 61..67 -> "Chuva"
+            in 71..77, 85, 86 -> "Neve"
+            in 80..82 -> "Pancadas de chuva"
+            in 95..99 -> "Trovoada"
+            else -> "Instavel"
+        }
+
+    /** Indica se o dia favorece o uso das areas externas do condominio. */
+    val bomParaAreaExterna: Boolean
+        get() = chanceChuva < 40 && codigo < 51
+
+    /** Aviso mostrado ao morador ao escolher esta data para a reserva. */
+    val aviso: String
         get() = when {
-            indice <= 40 -> "Boas condicoes para atividades ao ar livre na area de lazer."
-            indice <= 60 -> "Grupos sensiveis devem evitar exercicio intenso ao ar livre."
-            indice <= 80 -> "Prefira atividades em ambientes fechados hoje."
-            else -> "Mantenha janelas fechadas e evite as areas externas."
+            chanceChuva >= 70 -> "Alta chance de chuva. Considere um espaco coberto."
+            chanceChuva >= 40 -> "Pode chover. Vale ter um plano B para area externa."
+            else -> "Tempo favoravel para uso das areas externas."
         }
 }

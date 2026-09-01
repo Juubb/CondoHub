@@ -48,8 +48,8 @@ import kotlinx.coroutines.launch
 //   G - votacoes, regras, corpo de eleitos, ocorrencias com
 //       protocolo e reservas registradas
 //   S - eventos e canais de participacao da comunidade
-//   E - coleta seletiva e monitoramento da qualidade do ar
-//       por meio de API publica
+//   E - coleta seletiva, vagas de carga eletrica e pauta de
+//       energia solar em votacao
 // ============================================================
 
 class MainActivity : ComponentActivity() {
@@ -151,7 +151,7 @@ fun AppCondoHub() {
                 TelaVotacoes(aoAvisar = avisar)
             }
 
-            // ---------- 6. Reservar espaco ----------
+            // ---------- 6. Reservar espaco (consome a API de previsao) ----------
             composable(Rotas.RESERVA) {
                 TelaReserva(aoAvisar = avisar)
             }
@@ -176,7 +176,7 @@ fun AppCondoHub() {
                 TelaGaragem()
             }
 
-            // ---------- 11. Coleta e qualidade do ar ----------
+            // ---------- 11. Coleta sustentavel ----------
             composable(Rotas.COLETA) {
                 TelaColeta()
             }

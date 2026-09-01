@@ -79,8 +79,7 @@ fun TelaHome(
         ItemServico("📋", "Regras", Rotas.REGRAS),
         ItemServico("👥", "Corpo de eleitos", Rotas.ELEITOS),
         ItemServico("🚗", "Garagem", Rotas.GARAGEM),
-        ItemServico("♻️", "Coleta sustentavel", Rotas.COLETA),
-        ItemServico("🌿", "Qualidade do ar", Rotas.COLETA)
+        ItemServico("♻️", "Coleta sustentavel", Rotas.COLETA)
     )
 
     LazyColumn(
