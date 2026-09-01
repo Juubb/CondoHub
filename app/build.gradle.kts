@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.recipes"
+    namespace = "com.example.condohub"
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.example.recipes"
+        applicationId = "com.example.condohub"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -50,6 +50,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
+
+    // Navegacao entre as telas do app
+    implementation("androidx.navigation:navigation-compose:2.8.4")
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
