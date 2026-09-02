@@ -49,7 +49,7 @@ object Repositorio {
         Evento("e7", "🎅", "Chegada do Papai Noel", "2026-12-15", "18:00", "Portaria",
             "Entrega de lembrancinhas para as criancas do condominio. Cadastre o nome e a idade da crianca com a sindica ate 5 de dezembro.", confirmadosBase = 26),
         Evento("e8", "🎄", "Confraternizacao", "2026-12-20", "19:00", "Area externa",
-            "Encontro de fim de ano com amigo secreto (ate R$ 50) e ceia compartilhada. Confirme a presenca ate 10 de dezembro.")
+            "Encontro de fim de ano com amigo secreto (ate R$ 50) e ceia compartilhada. Confirme a presenca ate 10 de dezembro.", confirmadosBase = 38)
     )
 
     /** Eventos sempre ordenados por data, incluindo os criados pelo morador. */
@@ -180,7 +180,7 @@ object Repositorio {
 
     // ---------- corpo de eleitos ----------
     val eleitos = listOf(
-        Eleito("Sindica", "Marta Albuquerque", "Bloco B - Apto 801", confirmadosBase = 38),
+        Eleito("Sindica", "Marta Albuquerque", "Bloco B - Apto 801"),
         Eleito("Subsindico", "Ricardo Nunes", "Bloco A - Apto 302"),
         Eleito("Conselho fiscal", "Helena Prado", "Bloco A - Apto 105"),
         Eleito("Conselho fiscal", "Jorge Tavares", "Bloco C - Apto 604"),
