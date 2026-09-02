@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -83,7 +84,8 @@ fun TelaVotacoes(aoAvisar: (String) -> Unit) {
                         color = Color.White
                     )
                     Text(
-                        text = "Seu voto e registrado por unidade e pode ser alterado ate o encerramento.",
+                        text = "Um voto por unidade: quem responde por ${Repositorio.UNIDADE} " +
+                            "vota uma vez, e a escolha pode ser alterada ate o encerramento.",
                         fontSize = 13.sp,
                         lineHeight = 19.sp,
                         color = Color.White.copy(alpha = 0.9f)
@@ -130,8 +132,8 @@ private fun CartaoPauta(
                     modifier = Modifier.weight(1f)
                 )
                 if (meuVoto != null) {
-                    Spacer(Modifier.height(8.dp))
-                    Selo("Votado", confirmado = true)
+                    Spacer(Modifier.width(8.dp))
+                    Selo(if (meuVoto) "A favor" else "Contra", confirmado = meuVoto)
                 }
             }
 

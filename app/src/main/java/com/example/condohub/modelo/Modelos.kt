@@ -17,6 +17,8 @@ data class Evento(
     val horario: String,    // "19:30"
     val local: String,
     val descricao: String,
+    /** Quantas outras unidades ja confirmaram presenca. */
+    val confirmadosBase: Int = 0,
     val criadoPeloMorador: Boolean = false
 )
 

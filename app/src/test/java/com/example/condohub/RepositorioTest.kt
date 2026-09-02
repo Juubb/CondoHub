@@ -46,4 +46,27 @@ class RepositorioTest {
         val depois = Repositorio.pautas.first { it.id == pauta.id }
         assertEquals(totalAntes + 1, depois.total)
     }
+
+    @Test
+    fun resposta_de_presenca_tem_tres_estados() {
+        val evento = Repositorio.eventos.first()
+        Repositorio.presencas.clear()
+
+        // sem resposta
+        assertEquals(null, Repositorio.presencas[evento.id])
+
+        // marca que vai: entra na contagem de confirmados
+        Repositorio.responderPresenca(evento.id, true)
+        assertEquals(true, Repositorio.presencas[evento.id])
+        assertEquals(evento.confirmadosBase + 1, Repositorio.confirmadosDe(evento))
+
+        // troca para nao vou: sai da contagem
+        Repositorio.responderPresenca(evento.id, false)
+        assertEquals(false, Repositorio.presencas[evento.id])
+        assertEquals(evento.confirmadosBase, Repositorio.confirmadosDe(evento))
+
+        // tocar de novo na mesma opcao desfaz a resposta
+        Repositorio.responderPresenca(evento.id, false)
+        assertEquals(null, Repositorio.presencas[evento.id])
+    }
 }

@@ -41,6 +41,7 @@ import com.example.condohub.ui.componentes.TituloSecao
 import com.example.condohub.ui.componentes.formatarData
 import com.example.condohub.ui.theme.Branco
 import com.example.condohub.ui.theme.CondoHubTheme
+import com.example.condohub.ui.theme.Erro
 import com.example.condohub.ui.theme.FundoApp
 import com.example.condohub.ui.theme.TextoPrincipal
 import com.example.condohub.ui.theme.TextoSecundario
@@ -192,7 +193,7 @@ fun TelaHome(
                 items(eventos, key = { it.id }) { evento ->
                     CartaoEvento(
                         evento = evento,
-                        confirmado = Repositorio.presencas[evento.id] == true,
+                        resposta = Repositorio.presencas[evento.id],
                         aoClicar = { aoNavegar("${Rotas.EVENTO}/${evento.id}") }
                     )
                 }
@@ -236,13 +237,13 @@ fun TelaHome(
 @Composable
 private fun CartaoEvento(
     evento: Evento,
-    confirmado: Boolean,
+    resposta: Boolean?,
     aoClicar: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .width(250.dp)
-            .height(if (confirmado) 165.dp else 145.dp)
+            .height(if (resposta != null) 165.dp else 145.dp)
             .clickable { aoClicar() },
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = Branco),
@@ -266,13 +267,13 @@ private fun CartaoEvento(
             Text("Horario: ${evento.horario}", fontSize = 13.sp, color = TextoSecundario)
             Text("Local: ${evento.local}", fontSize = 13.sp, color = TextoSecundario, maxLines = 1)
 
-            if (confirmado) {
+            if (resposta != null) {
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "PRESENCA CONFIRMADA",
+                    text = if (resposta) "VOCE VAI" else "VOCE NAO VAI",
                     fontSize = 11.sp,
                     fontWeight = FontWeight.Bold,
-                    color = VerdeCondo
+                    color = if (resposta) VerdeCondo else Erro
                 )
             }
         }

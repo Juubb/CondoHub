@@ -32,7 +32,9 @@ import com.example.condohub.ui.componentes.formatarData
 import com.example.condohub.ui.theme.Branco
 import com.example.condohub.ui.theme.Erro
 import com.example.condohub.ui.theme.FundoApp
+import com.example.condohub.ui.theme.TextoPrincipal
 import com.example.condohub.ui.theme.TextoSecundario
+import com.example.condohub.ui.theme.VerdeClaro
 import com.example.condohub.ui.theme.VerdeCondo
 import com.example.condohub.ui.theme.VerdeEscuro
 
@@ -66,7 +68,7 @@ fun TelaEvento(
         return
     }
 
-    val confirmado = Repositorio.presencas[eventoId] == true
+    val resposta = Repositorio.presencas[eventoId]   // true = vou, false = nao vou, null = sem resposta
 
     Column(
         modifier = Modifier
@@ -125,23 +127,74 @@ fun TelaEvento(
 
             Spacer(Modifier.height(24.dp))
 
-            Button(
-                onClick = {
-                    Repositorio.alternarPresenca(eventoId)
-                    aoAvisar(
-                        if (confirmado) "Presenca cancelada em ${evento.titulo}."
-                        else "Presenca confirmada em ${evento.titulo}!"
+            // ---------- confirmacao de presenca da unidade ----------
+            Text(
+                text = "SUA UNIDADE VAI?",
+                fontSize = 13.sp,
+                fontWeight = FontWeight.Bold,
+                letterSpacing = 0.6.sp,
+                color = TextoPrincipal
+            )
+
+            Spacer(Modifier.height(4.dp))
+
+            Text(
+                text = "Uma resposta por apartamento. ${Repositorio.confirmadosDe(evento)} unidades confirmadas ate agora.",
+                fontSize = 13.sp,
+                lineHeight = 19.sp,
+                color = TextoSecundario
+            )
+
+            Spacer(Modifier.height(12.dp))
+
+            Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                Button(
+                    onClick = {
+                        Repositorio.responderPresenca(eventoId, true)
+                        aoAvisar(
+                            if (resposta == true) "Resposta removida."
+                            else "Presenca confirmada em ${evento.titulo}!"
+                        )
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(52.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (resposta == true) VerdeEscuro else VerdeClaro,
+                        contentColor = if (resposta == true) Color.White else VerdeEscuro
                     )
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(52.dp),
-                shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.buttonColors(containerColor = VerdeEscuro)
-            ) {
+                ) {
+                    Text("Vou", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+
+                Button(
+                    onClick = {
+                        Repositorio.responderPresenca(eventoId, false)
+                        aoAvisar(
+                            if (resposta == false) "Resposta removida."
+                            else "Voce marcou que nao vai a ${evento.titulo}."
+                        )
+                    },
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(52.dp),
+                    shape = RoundedCornerShape(12.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = if (resposta == false) Erro else Color(0xFFF3E7E6),
+                        contentColor = if (resposta == false) Color.White else Erro
+                    )
+                ) {
+                    Text("Nao vou", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                }
+            }
+
+            if (resposta != null) {
+                Spacer(Modifier.height(10.dp))
                 Text(
-                    text = if (confirmado) "Cancelar presenca" else "Confirmar presenca",
-                    fontSize = 16.sp
+                    text = "Toque de novo na mesma opcao para desfazer.",
+                    fontSize = 12.sp,
+                    color = TextoSecundario
                 )
             }
 

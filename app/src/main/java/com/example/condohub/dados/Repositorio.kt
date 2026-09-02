@@ -35,19 +35,19 @@ object Repositorio {
     // ---------- eventos ----------
     val eventos = mutableStateListOf(
         Evento("e1", "🎃", "Dia das Criancas", "2026-10-12", "15:00", "Area de lazer",
-            "Tarde de brincadeiras para a criancada, com pula-pula, pintura facial e lanche coletivo. Cada familia contribui com um item para a mesa."),
+            "Tarde de brincadeiras para a criancada, com pula-pula, pintura facial e lanche coletivo. Cada familia contribui com um item para a mesa.", confirmadosBase = 23),
         Evento("e2", "🏢", "Assembleia ordinaria", "2026-10-18", "19:30", "Salao de festas",
-            "Prestacao de contas do semestre, votacao do reajuste da taxa condominial e eleicao de dois conselheiros. A presenca de cada unidade conta para o quorum."),
+            "Prestacao de contas do semestre, votacao do reajuste da taxa condominial e eleicao de dois conselheiros. A presenca de cada unidade conta para o quorum.", confirmadosBase = 41),
         Evento("e3", "🏊", "Reabertura da piscina", "2026-11-05", "10:00", "Piscina",
-            "A piscina reabre depois da manutencao do sistema de filtragem. Uso liberado das 8h as 22h, mediante apresentacao da carteirinha na portaria."),
+            "A piscina reabre depois da manutencao do sistema de filtragem. Uso liberado das 8h as 22h, mediante apresentacao da carteirinha na portaria.", confirmadosBase = 12),
         Evento("e4", "🎬", "Cinema ao ar livre", "2026-11-09", "19:00", "Area de lazer",
-            "Sessao com projetor e telao montados no gramado. Traga sua cadeira ou canga. Em caso de chuva, a sessao passa para o salao de festas."),
+            "Sessao com projetor e telao montados no gramado. Traga sua cadeira ou canga. Em caso de chuva, a sessao passa para o salao de festas.", confirmadosBase = 31),
         Evento("e5", "🧘", "Alongamento coletivo", "2026-11-15", "08:00", "Quadra",
-            "Aula aberta de 50 minutos conduzida por uma moradora educadora fisica. Indicada para todas as idades, sem necessidade de inscricao."),
+            "Aula aberta de 50 minutos conduzida por uma moradora educadora fisica. Indicada para todas as idades, sem necessidade de inscricao.", confirmadosBase = 8),
         Evento("e6", "🔁", "Feira de trocas", "2026-11-23", "09:00", "Hall do Bloco A",
-            "Traga roupas, livros e utensilios em bom estado para trocar com os vizinhos. O que sobrar e doado para a instituicao parceira do bairro."),
+            "Traga roupas, livros e utensilios em bom estado para trocar com os vizinhos. O que sobrar e doado para a instituicao parceira do bairro.", confirmadosBase = 17),
         Evento("e7", "🎅", "Chegada do Papai Noel", "2026-12-15", "18:00", "Portaria",
-            "Entrega de lembrancinhas para as criancas do condominio. Cadastre o nome e a idade da crianca com a sindica ate 5 de dezembro."),
+            "Entrega de lembrancinhas para as criancas do condominio. Cadastre o nome e a idade da crianca com a sindica ate 5 de dezembro.", confirmadosBase = 26),
         Evento("e8", "🎄", "Confraternizacao", "2026-12-20", "19:00", "Area externa",
             "Encontro de fim de ano com amigo secreto (ate R$ 50) e ceia compartilhada. Confirme a presenca ate 10 de dezembro.")
     )
@@ -56,11 +56,22 @@ object Repositorio {
     val eventosOrdenados: List<Evento>
         get() = eventos.sortedWith(compareBy({ it.data }, { it.horario }))
 
+    /**
+     * Resposta da unidade ao convite de cada evento:
+     *   true  = vou
+     *   false = nao vou
+     *   ausente = ainda nao respondeu
+     */
     val presencas = mutableStateMapOf<String, Boolean>()
 
-    fun alternarPresenca(id: String) {
-        if (presencas[id] == true) presencas.remove(id) else presencas[id] = true
+    /** Registra a resposta. Tocar de novo na mesma opcao desfaz a escolha. */
+    fun responderPresenca(id: String, vai: Boolean) {
+        if (presencas[id] == vai) presencas.remove(id) else presencas[id] = vai
     }
+
+    /** Total de unidades confirmadas, ja contando a resposta do morador. */
+    fun confirmadosDe(evento: Evento): Int =
+        evento.confirmadosBase + if (presencas[evento.id] == true) 1 else 0
 
     fun adicionarEvento(evento: Evento) = eventos.add(evento)
 
@@ -169,7 +180,7 @@ object Repositorio {
 
     // ---------- corpo de eleitos ----------
     val eleitos = listOf(
-        Eleito("Sindica", "Marta Albuquerque", "Bloco B - Apto 801"),
+        Eleito("Sindica", "Marta Albuquerque", "Bloco B - Apto 801", confirmadosBase = 38),
         Eleito("Subsindico", "Ricardo Nunes", "Bloco A - Apto 302"),
         Eleito("Conselho fiscal", "Helena Prado", "Bloco A - Apto 105"),
         Eleito("Conselho fiscal", "Jorge Tavares", "Bloco C - Apto 604"),
